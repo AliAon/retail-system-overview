@@ -1,8 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 export default function AuthPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const shop = searchParams.get("shop");
+  const email = searchParams.get("email");
+  const appUrl = searchParams.get("appUrl");
+
   return (
     <div className="flex items-center justify-center min-h-screen max-w-full sm:px-0 px-4 ">
       <Card className="w-full max-w-md shadow-lg rounded-xl">
@@ -18,7 +25,35 @@ export default function AuthPage() {
 
         <CardContent className="space-y-6 mt-2">
           <div className="flex justify-center">
-            <Button className={"font-arial font-medium"}>Authorize Now</Button>
+            <Button
+              onClick={async () => {
+                try {
+                  const response = await axios.get(
+                    `${import.meta.env.VITE_PUBLIC_BACKEND_URL}/shopifyAccount/shopify`,
+                    {
+                      params: {
+                        shop,
+                        redirect:
+                          "https://retail-system-overview.vercel.app/wellcome-won-app",
+                        email,
+                      },
+                      headers: {
+                        "Content-Type": "application/json",
+                        "ngrok-skip-browser-warning": "1",
+                      },
+                    },
+                  );
+
+                  const url = response.data?.data;
+                  if (url) window.location.href = url;
+                } catch (error) {
+                  console.log(error);
+                }
+              }}
+              className={"font-arial font-medium"}
+            >
+              Authorize Now
+            </Button>
           </div>
           <div className="flex flex-col gap-3">
             <Separator />
