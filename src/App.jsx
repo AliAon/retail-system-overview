@@ -4,7 +4,7 @@ import { lazy, Suspense } from "react";
 import { ColorRing } from "react-loader-spinner";
 const Login = lazy(() => import("./pages/index"));
 const Authenticate = lazy(() => import("./pages/authenticate"));
-
+const Thankyou = lazy(() => import("./pages/thankyou"));
 function App() {
   return (
     <BrowserRouter>
@@ -27,6 +27,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/authenticate" element={<Authenticate />} />
+          <Route path="/thankyou" element={<Thankyou />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

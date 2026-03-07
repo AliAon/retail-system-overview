@@ -3,12 +3,43 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
+import { Loader } from "lucide-react";
 
 export default function AuthPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const shop = searchParams.get("shop");
   const email = searchParams.get("email");
   const appUrl = searchParams.get("appUrl");
+  const [isLoading, setIsLoading] = useState(false);
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${import.meta.env.VITE_PUBLIC_BACKEND_URL}/shopifyAccount/shopify`,
+        {
+          params: {
+            shop,
+            redirect:
+              "https://retail-system-overview.vercel.app/wellcome-won-app",
+            email,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "1",
+          },
+        },
+      );
+
+      const url = response.data?.data;
+      if (url) window.location.href = url;
+    } catch (error) {
+      console.log("error", error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen max-w-full sm:px-0 px-4 ">
@@ -25,34 +56,12 @@ export default function AuthPage() {
 
         <CardContent className="space-y-6 mt-2">
           <div className="flex justify-center">
-            <Button
-              onClick={async () => {
-                try {
-                  const response = await axios.get(
-                    `${import.meta.env.VITE_PUBLIC_BACKEND_URL}/shopifyAccount/shopify`,
-                    {
-                      params: {
-                        shop,
-                        redirect:
-                          "https://retail-system-overview.vercel.app/wellcome-won-app",
-                        email,
-                      },
-                      headers: {
-                        "Content-Type": "application/json",
-                        "ngrok-skip-browser-warning": "1",
-                      },
-                    },
-                  );
-
-                  const url = response.data?.data;
-                  if (url) window.location.href = url;
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-              className={"font-arial font-medium"}
-            >
-              Authorize Now
+            <Button onClick={handleSubmit} className={"font-arial font-medium"}>
+              {isLoading ? (
+                <Loader className="animate-spin" />
+              ) : (
+                "Authorize Now"
+              )}
             </Button>
           </div>
           <div className="flex flex-col gap-3">
