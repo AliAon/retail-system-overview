@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { Loader } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function AuthPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,8 +21,6 @@ export default function AuthPage() {
         {
           params: {
             shop,
-            redirect:
-              "https://retail-system-overview.vercel.app/wellcome-won-app",
             email,
           },
           headers: {
@@ -34,6 +33,7 @@ export default function AuthPage() {
       const url = response.data?.data;
       if (url) window.location.href = url;
     } catch (error) {
+      toast.error("Internal Server Error");
       console.log("error", error);
       setIsLoading(false);
     } finally {
@@ -56,7 +56,10 @@ export default function AuthPage() {
 
         <CardContent className="space-y-6 mt-2">
           <div className="flex justify-center">
-            <Button onClick={handleSubmit} className={"font-arial font-medium"}>
+            <Button
+              onClick={handleSubmit}
+              className={"font-arial font-medium cursor-pointer"}
+            >
               {isLoading ? (
                 <Loader className="animate-spin" />
               ) : (
