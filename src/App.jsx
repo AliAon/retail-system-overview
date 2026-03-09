@@ -2,6 +2,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { lazy, Suspense } from "react";
 import { ColorRing } from "react-loader-spinner";
+import {
+  ProtectedRouteMiddleware,
+  PublicRouteMiddleware,
+} from "./hoc/auth-gaurd";
+import Layout from "./layout";
+import Products from "./pages/dashboard/products";
+const Dashboard = lazy(() => import("./pages/dashboard/"));
 const Login = lazy(() => import("./pages/index"));
 const Authenticate = lazy(() => import("./pages/authenticate"));
 const Thankyou = lazy(() => import("./pages/thankyou"));
@@ -25,11 +32,19 @@ function App() {
         }
       >
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/authenticate" element={<Authenticate />} />
-          <Route path="/thankyou" element={<Thankyou />} />
-          <Route path="/welcome" element={<Welcome />} />
+          <Route element={<PublicRouteMiddleware />}>
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/authenticate" element={<Authenticate />} />
+            <Route path="/thankyou" element={<Thankyou />} />
+            <Route path="/welcome" element={<Welcome />} />
+          </Route>
+          <Route element={<ProtectedRouteMiddleware />}>
+            <Route element={<Layout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/products" element={<Products />} />
+            </Route>
+          </Route>
         </Routes>
       </Suspense>
     </BrowserRouter>
