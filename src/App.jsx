@@ -6,13 +6,15 @@ import {
   ProtectedRouteMiddleware,
   PublicRouteMiddleware,
 } from "./hoc/auth-gaurd";
-import Layout from "./layout";
-import Products from "./pages/dashboard/products";
+
+const Layout = lazy(() => import("./layout"));
 const Dashboard = lazy(() => import("./pages/dashboard/"));
 const Login = lazy(() => import("./pages/index"));
 const Authenticate = lazy(() => import("./pages/authenticate"));
 const Thankyou = lazy(() => import("./pages/thankyou"));
 const Welcome = lazy(() => import("./pages/welcome"));
+const AddProduct = lazy(() => import("./pages/dashboard/add-product"));
+const Products = lazy(() => import("./pages/dashboard/products"));
 function App() {
   return (
     <BrowserRouter>
@@ -43,6 +45,7 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/add-product" element={<AddProduct />} />
             </Route>
           </Route>
         </Routes>

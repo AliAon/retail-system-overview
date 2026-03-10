@@ -7,14 +7,20 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import React from "react";
+import React, { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
-export default function Paginate({
-  currentPage,
-  totalPage = 5,
-  setCurrentPage,
-}) {
+export default function Paginate({ currentPage, totalPage, setCurrentPage }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setSearchParams({ ...searchParams, page: currentPage });
+  }, [currentPage]);
+
   const getvisiblePages = () => {
+    if (totalPage < 3) {
+      return Array.from({ length: totalPage }, (_, i) => i + 1);
+    }
     if (currentPage === 1) {
       return [1, 2, 3];
     }
