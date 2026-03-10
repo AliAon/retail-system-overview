@@ -26,7 +26,7 @@ export default function Optionform({ tab, setTab }) {
         <div className="col-span-12">
           <Label>Add New Option</Label>
         </div>
-        <div className="col-span-6 flex items-center gap-x-4 mt-2">
+        <div className="sm:col-span-6 col-span-12 flex items-center gap-x-4 mt-2">
           <div className=" flex-1">
             <Input
               onChange={(e) => {
@@ -34,6 +34,7 @@ export default function Optionform({ tab, setTab }) {
               }}
               onKeyDown={(e) => {
                 if (e.key == "Enter") {
+                  e.preventDefault();
                   handleAddOption();
                 }
               }}
@@ -58,6 +59,7 @@ export default function Optionform({ tab, setTab }) {
         <Button
           onClick={() => setTab(String(Number(tab) - 1))}
           size="lg"
+          type="button"
           disabled={tab == "0"}
           className={"rounded-2xl"}
         >
@@ -65,7 +67,7 @@ export default function Optionform({ tab, setTab }) {
         </Button>
         <Button
           onClick={() => setTab(String(Number(tab) + 1))}
-          type={tab == "variant" ? "submit" : "button"}
+          type="button"
           size="lg"
           className={"rounded-2xl"}
         >

@@ -73,6 +73,7 @@ const OptionValue = ({ option, index }) => {
               }}
               onKeyDown={(e) => {
                 if (e.key == "Enter") {
+                  e.preventDefault();
                   handleValue(index);
                 }
               }}
@@ -80,7 +81,11 @@ const OptionValue = ({ option, index }) => {
               type="text"
               placeholder="Enter value"
             />
-            <Button disabled={value == ""} onClick={() => handleValue(index)}>
+            <Button
+              type="button"
+              disabled={value == ""}
+              onClick={() => handleValue(index)}
+            >
               Add Value
             </Button>
           </div>
@@ -88,6 +93,7 @@ const OptionValue = ({ option, index }) => {
             className={
               "absolute right-3 -top-3 bg-transparent hover:bg-transparent cursor-pointer"
             }
+            type="button"
             onClick={() => handleRemoveOption(index)}
           >
             <Trash color="red" />

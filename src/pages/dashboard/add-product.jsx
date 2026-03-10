@@ -4,13 +4,17 @@ import Vareintform from "@/components/add-product/vareints-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useCreateProductMutation } from "@/redux/services/products-api";
 import { Field, Form, Formik } from "formik";
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function AddProduct() {
   const pathname = useLocation().pathname;
   const [tab, setTab] = React.useState("0");
+  const [createProduct, { isLoading }] = useCreateProductMutation();
+  const naviate = useNavigate();
 
   return (
     <div className="p-4">
@@ -27,50 +31,30 @@ export default function AddProduct() {
           <CardContent className={"px-0 overflow-x-auto"}>
             <Formik
               initialValues={{
-                shop: "wonadropshiping.myshopify.com",
+                shop: "",
                 productData: {
-                  name: "Nova Wireless Earbuds",
-                  description:
-                    "<h2>Nova Wireless Earbuds</h2><p>Crystal clear sound with deep bass and Bluetooth 5.3 connectivity.</p>",
-                  category: "Electronics",
-                  productTags: "earbuds, wireless, bluetooth",
-
+                  name: "",
+                  description: "",
+                  category: "",
+                  productTags: "",
                   vendorData: {
-                    first_name: "John",
-                    last_name: "Doe",
+                    first_name: "",
+                    last_name: "",
                   },
-
-                  option: [
-                    {
-                      option: "Color",
-                      values: ["Black", "White"],
-                    },
-                  ],
-
-                  variants: [
-                    {
-                      sku: "NOVA-BLK",
-                      price: "18.50",
-                      weight: 120,
-                      option: [{ value: "Black" }],
-                      image:
-                        "https://www.lendmeurears.com/cdn/shop/files/novablack.png?v=1723781084&width=3840",
-                      inventory_quantity: 50,
-                    },
-                    {
-                      sku: "NOVA-WHT",
-                      price: "18.50",
-                      weight: 120,
-                      option: [{ value: "White" }],
-                      image:
-                        "https://www.iwantek.com/cdn/shop/articles/the-future-of-wearable-tech-why-nova-earring-earbuds-are-leading-445303.jpg?v=1751360556",
-                      inventory_quantity: 40,
-                    },
-                  ],
+                  option: [],
+                  variants: [],
                 },
               }}
               onSubmit={(values) => {
-                console.log("values", values);
+                createProduct(values)
+                  .unwrap()
+                  .then((res) => {
+                    toast.success(res.message);
+                    naviate("/products");
+                  })
+                  .catch((error) => {
+                    toast.error(error.data.message);
+                  });
               }}
             >
               <Form>
@@ -93,7 +77,11 @@ export default function AddProduct() {
                     <Optionform setTab={setTab} tab={tab} />
                   </TabsContent>
                   <TabsContent value="2">
-                    <Vareintform />
+                    <Vareintform
+                      setTab={setTab}
+                      tab={tab}
+                      isLoading={isLoading}
+                    />
                   </TabsContent>
                 </Tabs>
               </Form>

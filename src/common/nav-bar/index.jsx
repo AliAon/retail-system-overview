@@ -3,7 +3,7 @@ import React from "react";
 import Profile from "./profile";
 export default function Navbar() {
   return (
-    <div className="h-17.5 md:h-20.5 relative shadow-md shadow-[#0000000D] flex items-center justify-between  py-8 px-4  ">
+    <div className="h-17.5 md:h-18 relative shadow-md shadow-[#0000000D] flex items-center justify-between  py-8 px-4  ">
       {/* Left Side: Title */}
       <div className="flex items-center gap-4  ">
         {" "}

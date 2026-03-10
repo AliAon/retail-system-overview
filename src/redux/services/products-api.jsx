@@ -27,6 +27,14 @@ export const productApi = createApi({
     shops: builder.query({
       query: () => "shopifyAccount/findAll",
     }),
+    createProduct: builder.mutation({
+      query: (data) => ({
+        url: "/shopifyAccount/listProduct",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
-export const { useProductsQuery, useShopsQuery } = productApi;
+export const { useProductsQuery, useShopsQuery, useCreateProductMutation } =
+  productApi;

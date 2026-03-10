@@ -21,12 +21,11 @@ import { Button } from "../ui/button";
 export default function Basicform({ tab, setTab }) {
   const { values, setFieldValue } = useFormikContext();
   const { data: shopData, isLoading } = useShopsQuery();
-  console.log("values", values);
 
   return (
     <>
       <div className="py-4 grid grid-cols-12 gap-4">
-        <div className="col-span-6">
+        <div className="sm:col-span-6 col-span-12">
           <Label>Product Name</Label>
           <Field
             as={Input}
@@ -37,7 +36,7 @@ export default function Basicform({ tab, setTab }) {
             placeholder="Product Name"
           />
         </div>
-        <div className="col-span-6">
+        <div className="sm:col-span-6 col-span-12">
           <Label>Shop</Label>
           {isLoading ? (
             <Loader className="animate-spin" />
@@ -77,10 +76,10 @@ export default function Basicform({ tab, setTab }) {
             type="text"
             value={values?.productData?.description}
             className="mt-2"
-            placeholder="Product Name"
+            placeholder="Product Description"
           />
         </div>
-        <div className="col-span-6 mt-2">
+        <div className="sm:col-span-6 col-span-12  mt-2">
           <Label>Category</Label>
 
           <Select
@@ -101,7 +100,7 @@ export default function Basicform({ tab, setTab }) {
             </SelectContent>
           </Select>
         </div>
-        <div className="col-span-6 mt-2">
+        <div className="sm:col-span-6 col-span-12 mt-2">
           <Label>Product Tags</Label>
           <CheckboxSelector />
         </div>
@@ -110,24 +109,26 @@ export default function Basicform({ tab, setTab }) {
             Vendor Details
           </p>
         </div>
-        <div className="col-span-6">
+        <div className="sm:col-span-6 col-span-12">
           <Label>Firstname</Label>
           <Field
             as={Input}
             type="text"
+            name="productData.vendorData.first_name"
             value={values?.productData?.vendorData.first_name}
             className="mt-2"
-            placeholder="Jon"
+            placeholder="eg. Jon"
           />
         </div>
-        <div className="col-span-6">
+        <div className="sm:col-span-6 col-span-12">
           <Label>Lastname</Label>
           <Field
             as={Input}
             type="text"
+            name="productData.vendorData.last_name"
             value={values?.productData?.vendorData.last_name}
             className="mt-2"
-            placeholder="Doe"
+            placeholder="eg. Doe"
           />
         </div>
       </div>
@@ -135,6 +136,7 @@ export default function Basicform({ tab, setTab }) {
         <Button
           onClick={() => setTab(String(Number(tab) - 1))}
           size="lg"
+          type="button"
           disabled={tab == "0"}
           className={"rounded-2xl"}
         >
@@ -142,7 +144,7 @@ export default function Basicform({ tab, setTab }) {
         </Button>
         <Button
           onClick={() => setTab(String(Number(tab) + 1))}
-          type={tab == "variant" ? "submit" : "button"}
+          type="button"
           size="lg"
           className={"rounded-2xl"}
         >
