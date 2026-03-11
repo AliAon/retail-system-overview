@@ -13,8 +13,6 @@ import {
 import { Label } from "../ui/label";
 import { useShopsQuery } from "@/redux/services/products-api";
 import { Loader } from "lucide-react";
-import ReactQuill from "react-quill-new";
-// import "react-quill/dist/quill.snow.css";
 import CheckboxSelector from "@/common/checkbox-selector";
 import { Button } from "../ui/button";
 
