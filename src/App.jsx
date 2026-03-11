@@ -46,6 +46,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/add-product" element={<AddProduct />} />
+              {/* <Route path="/add-product" element={<AddProduct />} /> */}
             </Route>
           </Route>
         </Routes>
