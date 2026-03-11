@@ -1,4 +1,4 @@
-import { Field, useFormikContext } from "formik";
+import { ErrorMessage, Field, useFormikContext } from "formik";
 import React from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -19,7 +19,8 @@ import CheckboxSelector from "@/common/checkbox-selector";
 import { Button } from "../ui/button";
 
 export default function Basicform({ tab, setTab }) {
-  const { values, setFieldValue } = useFormikContext();
+  const { values, setFieldValue, validateForm, setTouched } =
+    useFormikContext();
   const { data: shopData, isLoading } = useShopsQuery();
 
   return (
@@ -34,6 +35,11 @@ export default function Basicform({ tab, setTab }) {
             value={values?.productData?.name}
             className="mt-2"
             placeholder="Product Name"
+          />
+          <ErrorMessage
+            name="productData.name"
+            component="span"
+            className="text-xs text-red-500"
           />
         </div>
         <div className="sm:col-span-6 col-span-12">
@@ -61,6 +67,11 @@ export default function Basicform({ tab, setTab }) {
               </SelectContent>
             </Select>
           )}
+          <ErrorMessage
+            name="shop"
+            component="span"
+            className="text-xs text-red-500"
+          />
         </div>
         <div className="col-span-12 mt-2">
           <Label>Description</Label>
@@ -77,6 +88,11 @@ export default function Basicform({ tab, setTab }) {
             value={values?.productData?.description}
             className="mt-2"
             placeholder="Product Description"
+          />
+          <ErrorMessage
+            name="productData.description"
+            component="span"
+            className="text-xs text-red-500"
           />
         </div>
         <div className="sm:col-span-6 col-span-12  mt-2">
@@ -119,6 +135,11 @@ export default function Basicform({ tab, setTab }) {
             className="mt-2"
             placeholder="eg. Jon"
           />
+          <ErrorMessage
+            name="productData.vendorData.first_name"
+            component="span"
+            className="text-xs text-red-500"
+          />
         </div>
         <div className="sm:col-span-6 col-span-12">
           <Label>Lastname</Label>
@@ -129,6 +150,11 @@ export default function Basicform({ tab, setTab }) {
             value={values?.productData?.vendorData.last_name}
             className="mt-2"
             placeholder="eg. Doe"
+          />
+          <ErrorMessage
+            name="productData.vendorData.last_name"
+            component="span"
+            className="text-xs text-red-500"
           />
         </div>
       </div>
@@ -143,7 +169,30 @@ export default function Basicform({ tab, setTab }) {
           Previous
         </Button>
         <Button
-          onClick={() => setTab(String(Number(tab) + 1))}
+          onClick={async () => {
+            const errors = await validateForm();
+            if (
+              errors?.shop ||
+              errors?.productData?.name ||
+              errors?.productData?.description ||
+              errors?.productData?.vendorData?.first_name ||
+              errors?.productData?.vendorData?.last_name
+            ) {
+              await setTouched({
+                shop: true,
+                productData: {
+                  name: true,
+                  description: true,
+                  vendorData: {
+                    first_name: true,
+                    last_name: true,
+                  },
+                },
+              });
+              return;
+            }
+            setTab(String(Number(tab) + 1));
+          }}
           type="button"
           size="lg"
           className={"rounded-2xl"}

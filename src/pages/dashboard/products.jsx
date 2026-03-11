@@ -2,6 +2,15 @@ import Paginate from "@/common/paginate";
 import { SearchInput } from "@/common/search-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -13,7 +22,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useProductsQuery } from "@/redux/services/products-api";
+import { useProductsQuery, useShopsQuery } from "@/redux/services/products-api";
+import { Loader } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 
@@ -21,13 +31,16 @@ export default function Products() {
   const pathname = useLocation().pathname;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [shop, setShop] = useState("wonadropshiping.myshopify.com");
+  const { data: shopData, isLoading: isShopLoading } = useShopsQuery();
+
   const [search, setSearch] = useState("");
   const {
     data: products,
     isLoading,
     isFetching,
   } = useProductsQuery({
-    shop: "wonadropshiping.myshopify.com",
+    shop,
     page: searchParams.get("page") || 1,
     search: useDebounce(search, 500),
   });
@@ -44,6 +57,7 @@ export default function Products() {
               <p className="text-xl text-primary font-poppins lg:pl-0 md:pl-7 font-bold capitalize">
                 {pathname?.split("/")[1]?.toString()}
               </p>
+
               <div className="flex flex-col items-end gap-8">
                 <Link to="/add-product">
                   <Button
@@ -52,7 +66,35 @@ export default function Products() {
                     Add Product
                   </Button>
                 </Link>
-                <SearchInput setSearch={setSearch} search={search} />
+                <div className="flex items-center gap-4">
+                  <SearchInput setSearch={setSearch} search={search} />
+
+                  <div>
+                    {isShopLoading ? (
+                      <Loader className="animate-spin" />
+                    ) : (
+                      <Select
+                        value={shop}
+                        onValueChange={(value) => {
+                          setShop(value);
+                        }}
+                      >
+                        <SelectTrigger className="w-full ">
+                          <SelectValue placeholder="Select a shop" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {shopData?.data?.shopifyAccount?.map((shop) => (
+                              <SelectItem value={shop.shopDomain}>
+                                {shop.shopName}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </CardTitle>

@@ -1,13 +1,13 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { Field, useFormikContext } from "formik";
+import { ErrorMessage, Field, useFormikContext } from "formik";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Loader } from "lucide-react";
 
 export default function variantsform({ tab, setTab, isLoading }) {
-  const { values, setFieldValue } = useFormikContext();
+  const { values, setFieldValue, errors } = useFormikContext();
   const options = values?.productData?.option || [];
   const variants = options?.flatMap((item) =>
     item.values.flatMap((value) => ({
@@ -54,6 +54,11 @@ export default function variantsform({ tab, setTab, isLoading }) {
                   className="mt-2"
                   placeholder="Enter Sku"
                 />
+                <ErrorMessage
+                  name={`productData.variants.${index}.sku`}
+                  component="span"
+                  className="text-sm text-red-500"
+                />
               </div>
               <div className="sm:col-span-6 col-span-12">
                 <Label>Price</Label>
@@ -69,6 +74,11 @@ export default function variantsform({ tab, setTab, isLoading }) {
                   }}
                   className="mt-2"
                   placeholder="Enter Price"
+                />
+                <ErrorMessage
+                  name={`productData.variants.${index}.price`}
+                  component="span"
+                  className="text-sm text-red-500"
                 />
               </div>
               <div className="sm:col-span-6 col-span-12">
@@ -86,6 +96,11 @@ export default function variantsform({ tab, setTab, isLoading }) {
                   className="mt-2"
                   placeholder="Enter Weight"
                 />
+                <ErrorMessage
+                  name={`productData.variants.${index}.weight`}
+                  component="span"
+                  className="text-sm text-red-500"
+                />
               </div>
               <div className="sm:col-span-6 col-span-12">
                 <Label>Inventory Quantity</Label>
@@ -102,6 +117,11 @@ export default function variantsform({ tab, setTab, isLoading }) {
                   className="mt-2"
                   placeholder="Enter Inventory Quantity"
                 />
+                <ErrorMessage
+                  name={`productData.variants.${index}.inventory_quantity`}
+                  component="span"
+                  className="text-sm text-red-500"
+                />
               </div>
               <div className="col-span-12">
                 <Label>Featured Image</Label>
@@ -114,6 +134,12 @@ export default function variantsform({ tab, setTab, isLoading }) {
           </CardContent>
         </Card>
       ))}
+      {errors?.productData?.variants &&
+        !Array.isArray(errors.productData.variants) && (
+          <span className="text-red-500 text-sm">
+            {errors.productData.variants}
+          </span>
+        )}
 
       <div className="flex items-center justify-between mt-5">
         <Button

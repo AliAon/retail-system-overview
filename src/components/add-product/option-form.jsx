@@ -1,4 +1,4 @@
-import { Field, useFormikContext } from "formik";
+import { ErrorMessage, Field, useFormikContext } from "formik";
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -7,7 +7,8 @@ import { Card, CardContent } from "../ui/card";
 import OptionValueForm from "./option-value-form";
 
 export default function Optionform({ tab, setTab }) {
-  const { values, setFieldValue } = useFormikContext();
+  const { values, setFieldValue, validateForm, setTouched, errors } =
+    useFormikContext();
   const [option, setOption] = useState("");
   const handleAddOption = () => {
     setFieldValue("productData.option", [
@@ -51,6 +52,15 @@ export default function Optionform({ tab, setTab }) {
             Add Option
           </Button>
         </div>
+        <div className="col-span-12">
+          {!Array.isArray(errors?.productData?.option) && (
+            <ErrorMessage
+              name="productData.option"
+              component="span"
+              className="text-xs text-red-500"
+            />
+          )}
+        </div>
       </div>
 
       <OptionValueForm />
@@ -66,7 +76,25 @@ export default function Optionform({ tab, setTab }) {
           Previous
         </Button>
         <Button
-          onClick={() => setTab(String(Number(tab) + 1))}
+          onClick={async () => {
+            const errors = await validateForm();
+            if (errors?.productData?.option) {
+              setTouched({
+                productData: {
+                  option: true,
+                },
+              });
+              if (Array.isArray(errors?.productData?.option)) {
+                setTouched({
+                  productData: {
+                    option: [{ values: true }],
+                  },
+                });
+              }
+              return;
+            }
+            setTab(String(Number(tab) + 1));
+          }}
           type="button"
           size="lg"
           className={"rounded-2xl"}

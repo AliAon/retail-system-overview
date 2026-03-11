@@ -1,4 +1,4 @@
-import { useFormikContext } from "formik";
+import { ErrorMessage, useFormikContext } from "formik";
 import React, { useState } from "react";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
@@ -18,7 +18,7 @@ export default function OptionValueForm() {
 
 const OptionValue = ({ option, index }) => {
   const [value, setValue] = useState([]);
-  const { values, setFieldValue } = useFormikContext();
+  const { values, setFieldValue, errors } = useFormikContext();
 
   const handleValue = (index) => {
     if (!value.trim()) return;
@@ -98,6 +98,11 @@ const OptionValue = ({ option, index }) => {
           >
             <Trash color="red" />
           </Button>
+          {errors?.productData?.option?.[index]?.values && (
+            <span className="text-xs text-red-500">
+              {errors?.productData?.option[index]?.values}
+            </span>
+          )}
         </CardContent>
       </Card>
     </li>

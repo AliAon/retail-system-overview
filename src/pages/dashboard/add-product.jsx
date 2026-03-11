@@ -9,6 +9,37 @@ import { Field, Form, Formik } from "formik";
 import React from "react";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import * as yup from "yup";
+const ProductSchema = yup.object().shape({
+  shop: yup.string().required("Shop is required"),
+  productData: yup.object().shape({
+    name: yup.string().required("Name is required"),
+    description: yup.string().required("Description is required"),
+    vendorData: yup.object().shape({
+      first_name: yup.string().required("First Name is required"),
+      last_name: yup.string().required("Last Name is required"),
+    }),
+    option: yup
+      .array()
+      .of(
+        yup.object().shape({
+          option: yup.string().required("Option is required"),
+          values: yup.array().min(1, "At least one value is required"),
+        }),
+      )
+      .min(1, "At least one option is required"),
+    variants: yup
+      .array()
+      .of(
+        yup.object().shape({
+          sku: yup.string().required("Sku is required"),
+          price: yup.number().required("Price is required"),
+          inventory_quantity: yup.number().required("Quantity is required"),
+        }),
+      )
+      .min(1, "At least one variant with price, quantity is required"),
+  }),
+});
 
 export default function AddProduct() {
   const pathname = useLocation().pathname;
@@ -45,6 +76,7 @@ export default function AddProduct() {
                   variants: [],
                 },
               }}
+              validationSchema={ProductSchema}
               onSubmit={(values) => {
                 createProduct(values)
                   .unwrap()
