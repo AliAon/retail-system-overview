@@ -8,13 +8,14 @@ import {
 } from "./hoc/auth-gaurd";
 
 const Layout = lazy(() => import("./layout"));
-const Dashboard = lazy(() => import("./pages/dashboard/"));
+const Dashboard = lazy(() => import("./pages/admin/"));
 const Login = lazy(() => import("./pages/index"));
 const Authenticate = lazy(() => import("./pages/authenticate"));
 const Thankyou = lazy(() => import("./pages/thankyou"));
 const Welcome = lazy(() => import("./pages/welcome"));
-const AddProduct = lazy(() => import("./pages/dashboard/add-product"));
-const Products = lazy(() => import("./pages/dashboard/products"));
+const AddProduct = lazy(() => import("./pages/admin/product/add-product"));
+const Products = lazy(() => import("./pages/admin/product"));
+const Orders = lazy(() => import("./pages/admin/order"));
 function App() {
   return (
     <BrowserRouter>
@@ -43,10 +44,10 @@ function App() {
           </Route>
           <Route element={<ProtectedRouteMiddleware />}>
             <Route element={<Layout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/admin" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/orders" element={<Orders />} />
               <Route path="/add-product" element={<AddProduct />} />
-              {/* <Route path="/add-product" element={<AddProduct />} /> */}
             </Route>
           </Route>
         </Routes>

@@ -5,6 +5,7 @@ import {
   ChevronRight,
   Home,
   Inbox,
+  ListOrdered,
   MoreHorizontal,
   Search,
   Settings,
@@ -42,7 +43,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Profile from "./nav-bar/profile";
 
@@ -68,10 +69,17 @@ const items = [
     url: "/products",
     icon: Box,
   },
+  {
+    title: "Orders",
+    url: "/orders",
+    icon: ListOrdered,
+  },
 ];
 
 export function AppSidebar() {
   const { setOpen } = useSidebar();
+  const pathname = useLocation().pathname;
+  console.log("pathname", pathname);
 
   useEffect(() => {
     const handleResize = () => {
@@ -98,7 +106,7 @@ export function AppSidebar() {
                 <Collapsible key={item.title} className="group/collapsible">
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton>
+                      <SidebarMenuButton isActive={pathname === item.url}>
                         <Link to={item.url} className="flex items-center">
                           {item.icon && <item.icon className="mr-2 h-5 w-5" />}
                           {item.title && (

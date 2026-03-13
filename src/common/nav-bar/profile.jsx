@@ -30,7 +30,7 @@ export default function Profile() {
         <div className="h-12 flex items-center justify-between rounded-full border border-[#EEEEEE] pl-2 pr-3">
           <div className="flex gap-2">
             <div className="w-[38px] h-[38px] flex items-center justify-center rounded-full bg-primary text-white text-sm">
-              {user?.name.charAt(0).toUpperCase()}
+              {user?.name?.charAt(0)?.toUpperCase()}
             </div>
             <div>
               <p className="text-xs text-black">{user?.name}</p>

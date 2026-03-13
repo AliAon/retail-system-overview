@@ -29,7 +29,7 @@ export default function LoginForm() {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
         localStorage.setItem("isLoggedIn", true);
-        // navigate("/dashboard");
+        // navigate("/admin");
         navigate("/products");
         toast.success(res.message);
       })
