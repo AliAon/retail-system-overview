@@ -179,15 +179,15 @@ function TableSkeleton() {
     <div className="space-y-2 w-full">
       {[...Array(5)].map((_, i) => (
         <div key={i} className="flex space-x-4 items-center justify-center">
-          <Skeleton className="h-4 w-[150px]" />
-          <Skeleton className="h-4 w-[200px]" />
-          <Skeleton className="h-4 w-[100px]" />
-          <Skeleton className="h-4 w-[200px]" />
-          <Skeleton className="h-4 w-[200px]" />
-          <Skeleton className="h-4 w-[120px]" />
-          <Skeleton className="h-4 w-[100px]" />
-          <Skeleton className="h-4 w-[200px]" />
-          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-4 w-37.5" />
+          <Skeleton className="h-4 w-50" />
+          <Skeleton className="h-4 w-25" />
+          <Skeleton className="h-4 w-50" />
+          <Skeleton className="h-4 w-50" />
+          <Skeleton className="h-4 w-30" />
+          <Skeleton className="h-4 w-25" />
+          <Skeleton className="h-4 w-50" />
+          <Skeleton className="h-4 w-25" />
         </div>
       ))}
     </div>

@@ -16,6 +16,7 @@ const Welcome = lazy(() => import("./pages/welcome"));
 const AddProduct = lazy(() => import("./pages/admin/product/add-product"));
 const Products = lazy(() => import("./pages/admin/product"));
 const Orders = lazy(() => import("./pages/admin/order"));
+
 function App() {
   return (
     <BrowserRouter>
