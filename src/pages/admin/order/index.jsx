@@ -20,7 +20,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useProductsQuery, useShopsQuery } from "@/redux/services/products-api";
+import {
+  useShopifyproductsQuery,
+  useShopsQuery,
+} from "@/redux/services/products-api";
 import { Loader } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
@@ -37,7 +40,7 @@ export default function Orders() {
     data: products,
     isLoading,
     isFetching,
-  } = useProductsQuery({
+  } = useShopifyproductsQuery({
     shop,
     page: searchParams.get("page") || 1,
     search: useDebounce(search, 500),
