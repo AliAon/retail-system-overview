@@ -82,7 +82,7 @@ export default function AddProduct() {
                   .unwrap()
                   .then((res) => {
                     toast.success(res.message);
-                    naviate("/products");
+                    naviate("/shopify-products");
                   })
                   .catch((error) => {
                     toast.error(error.data.message);
