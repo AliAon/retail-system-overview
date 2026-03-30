@@ -1,16 +1,4 @@
-import {
-  Box,
-  Calendar,
-  ChevronDown,
-  ChevronRight,
-  Home,
-  Inbox,
-  ListOrdered,
-  MoreHorizontal,
-  Search,
-  Settings,
-  ShoppingCart,
-} from "lucide-react";
+import { Box, ChevronRight, ListOrdered, MoreHorizontal } from "lucide-react";
 
 import {
   Sidebar,
@@ -27,8 +15,6 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
-  SidebarMenuSubItem,
-  SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
 
@@ -39,13 +25,10 @@ import {
 } from "@/components/ui/collapsible";
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Profile from "./nav-bar/profile";
+import { useEffect } from "react";
 
 // Menu items.
 const items = [
@@ -66,8 +49,18 @@ const items = [
   //   },
   {
     title: "Products",
-    url: "/products",
+    url: "#",
     icon: Box,
+    submenu: [
+      {
+        title: "Shopify Products",
+        url: "/shopify-products",
+      },
+      {
+        title: "SRS Products",
+        url: "/srs-products",
+      },
+    ],
   },
   {
     title: "Orders",
@@ -79,7 +72,6 @@ const items = [
 export function AppSidebar() {
   const { setOpen } = useSidebar();
   const pathname = useLocation().pathname;
-  console.log("pathname", pathname);
 
   useEffect(() => {
     const handleResize = () => {
@@ -136,12 +128,12 @@ export function AppSidebar() {
                             </SidebarMenuSubButton>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <SidebarMenuAction>
-                                  <MoreHorizontal />
-                                </SidebarMenuAction>
+                                {/* <SidebarMenuAction> */}
+                                {/* <MoreHorizontal /> */}
+                                {/* </SidebarMenuAction> */}
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent side="right" align="start">
-                                <DropdownMenuItem>
+                              {/* <DropdownMenuContent side="right" align="start"> */}
+                              {/* <DropdownMenuItem>
                                   <span>Add</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
@@ -149,8 +141,8 @@ export function AppSidebar() {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                   <span>Delete</span>
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
+                                </DropdownMenuItem> */}
+                              {/* </DropdownMenuContent> */}
                             </DropdownMenu>{" "}
                           </SidebarMenuSub>
                         ))}

@@ -1,51 +1,35 @@
 import Paginate from "@/common/paginate";
 import { SearchInput } from "@/common/search-input";
-import { Button } from "@/components/ui/button";
+import Title from "@/common/title";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useProductsQuery, useShopsQuery } from "@/redux/services/products-api";
-import { Loader } from "lucide-react";
+import { useSrsproductsQuery } from "@/redux/services/products-api";
 import React, { useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-export default function Products() {
-  const pathname = useLocation().pathname;
+export default function SRSProducts() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [shop, setShop] = useState("wonadropshiping.myshopify.com");
-  const { data: shopData, isLoading: isShopLoading } = useShopsQuery();
-
   const [search, setSearch] = useState("");
   const {
-    data: products,
-    isLoading,
+    data: srsData,
+    isLoading: isSrsLoading,
     isFetching,
-  } = useProductsQuery({
-    shop,
+  } = useSrsproductsQuery({
     page: searchParams.get("page") || 1,
     search: useDebounce(search, 500),
   });
-  const productData = products?.data?.products ?? [];
-  const pagination = products?.data?.pagination;
+  const productData = srsData?.data?.products ?? [];
+  const pagination = srsData?.data?.pagination;
 
   return (
     <div className="p-4">
@@ -54,63 +38,35 @@ export default function Products() {
         <Card className={"py-5 px-4"}>
           <CardTitle>
             <div className="flex md:flex-nowrap flex-wrap items-start justify-between">
-              <p className="text-xl text-primary font-poppins lg:pl-0 md:pl-7 font-bold capitalize">
-                {pathname?.split("/")[1]?.toString()}
-              </p>
+              <Title />
 
               <div className="flex flex-col items-end gap-8">
-                <Link to="/add-product">
+                {/* <Link to="/add-product">
                   <Button
                     className={"w-fit font-poppins font-medium cursor-pointer"}
                   >
                     Add Product
                   </Button>
-                </Link>
+                </Link> */}
                 <div className="flex items-center gap-4">
                   <SearchInput setSearch={setSearch} search={search} />
-
-                  <div>
-                    {isShopLoading ? (
-                      <Loader className="animate-spin" />
-                    ) : (
-                      <Select
-                        value={shop}
-                        onValueChange={(value) => {
-                          setShop(value);
-                        }}
-                      >
-                        <SelectTrigger className="w-full ">
-                          <SelectValue placeholder="Select a shop" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {shopData?.data?.shopifyAccount?.map((shop) => (
-                              <SelectItem value={shop.shopDomain}>
-                                {shop.shopName}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
           </CardTitle>
           <CardContent className={"px-0 overflow-x-auto"}>
-            {isLoading || isFetching ? (
+            {isSrsLoading || isFetching ? (
               <TableSkeleton />
             ) : (
               <Table className={"font-poppins"}>
                 <TableHeader className={"bg-gray-100 border rounded"}>
                   <TableRow>
                     <TableHead>Name</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Product Type</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Brand</TableHead>
                     <TableHead>Varients</TableHead>
-                    <TableHead>Vendor</TableHead>
-                    <TableHead>Scope</TableHead>
+                    <TableHead>Season</TableHead>
+                    <TableHead>Year</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -127,30 +83,39 @@ export default function Products() {
                     productData?.map((product) => (
                       <TableRow>
                         <TableCell className="font-medium truncate line-clamp-1 w-36">
-                          <img
-                            className="w-10 h-10 rounded-full object-cover"
-                            src={product?.image?.src ?? "/placholder.png"}
-                            alt=""
-                          />
+                          {(product?.image == "" || !product?.image) && (
+                            <img
+                              className="w-10 h-10 rounded-full object-cover"
+                              src={"/placholder.png"}
+                              alt=""
+                            />
+                          )}
+                          {product?.image && (
+                            <img
+                              className="w-10 h-10 rounded-full object-cover"
+                              src={product?.image ?? "/placholder.png"}
+                              alt=""
+                            />
+                          )}
                           <p className="font-poppins font-medium">
                             {" "}
-                            {product?.title}
+                            {product?.name}
                           </p>
                         </TableCell>
                         <TableCell className={"capitalize"}>
-                          {product?.status}
+                          {product?.category}
                         </TableCell>
                         <TableCell className={"capitalize "}>
-                          {product?.product_type}
+                          {product?.brand}
                         </TableCell>
                         <TableCell className={"capitalize "}>
                           {product?.variants?.length}
                         </TableCell>
                         <TableCell className={"capitalize"}>
-                          {product?.published_scope}
+                          {product?.season}
                         </TableCell>
                         <TableCell className={"capitalize"}>
-                          {product?.vendor}
+                          {product?.year}
                         </TableCell>
                       </TableRow>
                     ))
@@ -158,7 +123,7 @@ export default function Products() {
                 </TableBody>
               </Table>
             )}
-            {productData?.data?.products?.length > 9 && (
+            {pagination?.totalProducts > 9 && (
               <div className="py-4">
                 <Paginate
                   currentPage={currentPage}

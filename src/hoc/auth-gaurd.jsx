@@ -37,7 +37,7 @@ export const PublicRouteMiddleware = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   if (token && isLoggedIn) {
-    return <Navigate to={"/dashboard"} replace />;
+    return <Navigate to={"/admin"} replace />;
   }
   return <Outlet />;
 };

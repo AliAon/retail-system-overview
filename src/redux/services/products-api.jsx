@@ -12,18 +12,19 @@ export const productApi = createApi({
   }),
   tagTypes: ["product"],
   endpoints: (builder) => ({
-    products: builder.query({
-      /*************  ✨ Windsurf Command ⭐  *************/
-      /**
- * Generates a URL for fetching products from the backend.
- * @param {Object} filters - Filters to apply to the query.
-
-/*******  dfec11c5-631a-4ff0-82f8-11c8fcb0e768  *******/
+    shopifyproducts: builder.query({
       query: (filters) => {
         const params = new URLSearchParams(filters);
         return `/shopifyAccount/getShopifyProducts?${params.toString()}`;
       },
     }),
+    srsproducts: builder.query({
+      query: (filters) => {
+        const params = new URLSearchParams(filters);
+        return `/srsProduct?${params.toString()}`;
+      },
+    }),
+
     shops: builder.query({
       query: () => "shopifyAccount/findAll",
     }),
@@ -36,5 +37,9 @@ export const productApi = createApi({
     }),
   }),
 });
-export const { useProductsQuery, useShopsQuery, useCreateProductMutation } =
-  productApi;
+export const {
+  useShopifyproductsQuery,
+  useShopsQuery,
+  useSrsproductsQuery,
+  useCreateProductMutation,
+} = productApi;

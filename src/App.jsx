@@ -6,6 +6,7 @@ import {
   ProtectedRouteMiddleware,
   PublicRouteMiddleware,
 } from "./hoc/auth-gaurd";
+import SRSProducts from "./pages/admin/srs-product";
 
 const Layout = lazy(() => import("./layout"));
 const Dashboard = lazy(() => import("./pages/admin/"));
@@ -13,8 +14,10 @@ const Login = lazy(() => import("./pages/index"));
 const Authenticate = lazy(() => import("./pages/authenticate"));
 const Thankyou = lazy(() => import("./pages/thankyou"));
 const Welcome = lazy(() => import("./pages/welcome"));
-const AddProduct = lazy(() => import("./pages/admin/product/add-product"));
-const Products = lazy(() => import("./pages/admin/product"));
+const AddProduct = lazy(
+  () => import("./pages/admin/shopify-product/add-product"),
+);
+const ShopifyProduct = lazy(() => import("./pages/admin/shopify-product"));
 const Orders = lazy(() => import("./pages/admin/order"));
 
 function App() {
@@ -46,7 +49,8 @@ function App() {
           <Route element={<ProtectedRouteMiddleware />}>
             <Route element={<Layout />}>
               <Route path="/admin" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
+              <Route path="/shopify-products" element={<ShopifyProduct />} />
+              <Route path="/srs-products" element={<SRSProducts />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/add-product" element={<AddProduct />} />
             </Route>
