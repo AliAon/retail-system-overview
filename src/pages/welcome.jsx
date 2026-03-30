@@ -16,7 +16,7 @@ export default function WelcomePage() {
     setIsLoading(true);
     try {
       // You can redirect user to your app dashboard or home page
-      navigate("/dashboard");
+      navigate("/admin");
     } catch (error) {
       toast.error("Unable to continue. Try again!");
       console.log(error);
