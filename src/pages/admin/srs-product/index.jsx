@@ -106,7 +106,7 @@ export default function SRSProducts() {
                           {product?.category}
                         </TableCell>
                         <TableCell className={"capitalize "}>
-                          {product?.brand}
+                          {product?.brand ? product?.brand : "-"}
                         </TableCell>
                         <TableCell className={"capitalize "}>
                           {product?.variants?.length}
